@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<section class="checkout-page">
+  <h1>Checkout</h1>
+  <table class="data-table" data-testid="checkout-table">
+    <thead>
+      <tr><th>Product</th><th>Qty</th><th>Price</th><th>Line Total</th></tr>
+    </thead>
+    <tbody>
+      <% items.forEach(function(item) { %>
+        <tr>
+          <td><%= item.product.image_emoji %> <%= item.product.name %></td>
+          <td><%= item.quantity %></td>
+          <td>$<%= item.product.price.toFixed(2) %></td>
+          <td>$<%= (item.product.price * item.quantity).toFixed(2) %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <div class="checkout-summary" data-testid="checkout-summary">
+    <p>Subtotal: <span data-testid="checkout-subtotal">$<%= subtotal.toFixed(2) %></span></p>
+    <p>Shipping: <span data-testid="checkout-shipping">$<%= shipping.toFixed(2) %></span></p>
+    <p class="total-line">Total: <span data-testid="checkout-total">$<%= total.toFixed(2) %></span></p>
+  </div>
+
+  <form action="/checkout" method="POST" id="checkout-form" data-testid="checkout-form">
+    <button type="submit" class="btn btn-primary" data-testid="place-order-btn">Place Order</button>
+  </form>
+</section>
+
+<%- include('partials/footer') %>

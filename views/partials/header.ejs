@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> · QA Playground</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">🧪 QA Playground</a>
+      <nav class="main-nav">
+        <a href="/products" data-testid="nav-products">Products</a>
+        <a href="/orders" data-testid="nav-orders">Orders</a>
+        <!-- BUG UI-1: this link is intentionally broken - there is no /pricing route -->
+        <a href="/pricing" data-testid="nav-pricing">Pricing</a>
+        <a href="/docs" data-testid="nav-docs">Docs</a>
+        <a href="/contact" data-testid="nav-contact">Contact</a>
+        <% if (currentUser && currentUser.role === 'admin') { %>
+          <a href="/admin" data-testid="nav-admin">Admin</a>
+        <% } %>
+      </nav>
+      <div class="nav-actions">
+        <a href="/cart" class="cart-link" data-testid="nav-cart">
+          🛒 Cart <span class="cart-badge" data-testid="cart-count"><%= cartCount %></span>
+        </a>
+        <% if (currentUser) { %>
+          <a href="/profile" data-testid="nav-profile"><%= currentUser.name %></a>
+          <form action="/logout" method="POST" class="inline-form">
+            <button type="submit" class="btn btn-link" data-testid="logout-btn">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/login" data-testid="nav-login">Login</a>
+          <a href="/register" class="btn btn-primary btn-sm" data-testid="nav-register">Sign Up</a>
+        <% } %>
+      </div>
+    </div>
+  </header>
+  <main class="container page-content">

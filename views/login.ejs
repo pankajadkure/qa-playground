@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<section class="auth-form-section">
+  <h1>Login</h1>
+  <% if (error) { %>
+    <div class="alert alert-error" data-testid="login-error"><%= error %></div>
+  <% } %>
+  <form action="/login" method="POST" class="form" id="login-form" data-testid="login-form" novalidate>
+    <input type="hidden" name="next" value="<%= next %>" />
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required data-testid="login-email" />
+      <span class="field-error" id="email-error" data-testid="login-email-error"></span>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required data-testid="login-password" />
+    </div>
+    <button type="submit" class="btn btn-primary" data-testid="login-submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="/register">Register here</a>.</p>
+
+  <details class="sample-accounts">
+    <summary>Sample accounts</summary>
+    <ul>
+      <li><code>admin@qaplayground.test</code> / <code>Admin123!</code> (admin)</li>
+      <li><code>charlie@qaplayground.test</code> / <code>Customer123!</code> (customer)</li>
+      <li><code>priya@qaplayground.test</code> / <code>Priya123!</code> (customer)</li>
+      <li><code>sam@qaplayground.test</code> / <code>Sam123!</code> (customer)</li>
+    </ul>
+  </details>
+</section>
+
+<script src="/js/validation.js"></script>
+<%- include('partials/footer') %>

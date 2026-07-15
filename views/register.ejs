@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+<section class="auth-form-section">
+  <h1>Create an Account</h1>
+  <% if (error) { %>
+    <div class="alert alert-error" data-testid="register-error"><%= error %></div>
+  <% } %>
+  <form action="/register" method="POST" class="form" id="register-form" data-testid="register-form" novalidate>
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required value="<%= values.name || '' %>" data-testid="register-name" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required value="<%= values.email || '' %>" data-testid="register-email" />
+      <span class="field-error" id="reg-email-error" data-testid="register-email-error"></span>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required minlength="8" data-testid="register-password" />
+      <span class="field-hint">At least 8 characters.</span>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required data-testid="register-confirm-password" />
+      <span class="field-error" id="confirm-error" data-testid="register-confirm-error"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" data-testid="register-submit">Create Account</button>
+  </form>
+  <p>Already have an account? <a href="/login">Login here</a>.</p>
+</section>
+
+<script src="/js/validation.js"></script>
+<%- include('partials/footer') %>

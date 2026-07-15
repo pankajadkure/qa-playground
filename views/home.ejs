@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <h1>Welcome to QA Playground</h1>
+  <p>A realistic demo storefront built for practicing UI automation, API automation, and SQL data validation testing.</p>
+  <div class="hero-actions">
+    <a href="/products" class="btn btn-primary" data-testid="hero-shop-btn">Browse Products</a>
+    <a href="/docs" class="btn btn-secondary" data-testid="hero-docs-btn">Read the Docs</a>
+  </div>
+</section>
+
+<section>
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <% featured.forEach(function(p) { %>
+      <div class="product-card">
+        <div class="product-emoji"><%= p.image_emoji %></div>
+        <h3><%= p.name %></h3>
+        <p class="product-category"><%= p.category %></p>
+        <p class="product-price">$<%= p.price.toFixed(2) %></p>
+        <a href="/products/<%= p.id %>" class="btn btn-secondary btn-sm">View</a>
+      </div>
+    <% }); %>
+  </div>
+</section>
+
+<section class="info-panel">
+  <h2>What can you test here?</h2>
+  <ul>
+    <li>UI flows: registration, login, search &amp; filter, cart, checkout, admin CRUD</li>
+    <li>REST API: <code>/api/products</code>, <code>/api/users</code>, <code>/api/orders</code>, <code>/api/auth/*</code></li>
+    <li>SQL validation: compare UI/API responses directly against the SQLite database at <code>db/qa_playground.sqlite</code></li>
+  </ul>
+  <p>This app <strong>intentionally contains bugs</strong>. See <a href="/docs">/docs</a> for the full list.</p>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+
+<section class="catalog-toolbar">
+  <h1>Products</h1>
+  <form action="/products" method="GET" class="filter-form" id="filter-form" data-testid="filter-form">
+    <input
+      type="text"
+      name="livefilter"
+      id="live-search"
+      placeholder="Quick filter by name..."
+      data-testid="live-search-input"
+      autocomplete="off"
+    />
+    <select name="category" id="category-select" data-testid="category-select" onchange="this.form.submit()">
+      <option value="">All Categories</option>
+      <% categories.forEach(function(c) { %>
+        <option value="<%= c %>" <%= filters.category === c ? 'selected' : '' %>><%= c %></option>
+      <% }); %>
+    </select>
+    <select name="sort" id="sort-select" data-testid="sort-select" onchange="this.form.submit()">
+      <option value="">Default order</option>
+      <option value="price_asc" <%= filters.sort === 'price_asc' ? 'selected' : '' %>>Price: Low to High</option>
+      <option value="price_desc" <%= filters.sort === 'price_desc' ? 'selected' : '' %>>Price: High to Low</option>
+      <option value="name_asc" <%= filters.sort === 'name_asc' ? 'selected' : '' %>>Name: A to Z</option>
+      <option value="name_desc" <%= filters.sort === 'name_desc' ? 'selected' : '' %>>Name: Z to A</option>
+    </select>
+  </form>
+</section>
+
+<section class="product-grid" id="product-grid" data-testid="product-grid">
+  <% products.forEach(function(p) { %>
+    <div class="product-card <%= p.category === 'Electronics' ? 'product-card--elec' : '' %>"
+         data-testid="product-card"
+         data-product-id="<%= p.id %>"
+         data-product-name="<%= p.name %>">
+      <div class="product-emoji"><%= p.image_emoji %></div>
+      <h3><a href="/products/<%= p.id %>"><%= p.name %></a></h3>
+      <p class="product-category" data-testid="product-category"><%= p.category %></p>
+      <p class="product-price" data-testid="product-price">$<%= p.price.toFixed(2) %></p>
+      <p class="product-stock <%= p.stock === 0 ? 'out-of-stock' : '' %>">
+        <% if (p.stock === 0) { %>Out of stock<% } else { %><%= p.stock %> in stock<% } %>
+      </p>
+      <form action="/cart/add" method="POST" class="inline-form">
+        <input type="hidden" name="product_id" value="<%= p.id %>" />
+        <input type="hidden" name="quantity" value="1" />
+        <button type="submit" class="btn btn-primary btn-sm add-to-cart-btn" data-testid="add-to-cart-btn" <%= p.stock === 0 ? 'disabled' : '' %>>
+          Add to Cart
+        </button>
+      </form>
+    </div>
+  <% }); %>
+  <% if (products.length === 0) { %>
+    <p class="empty-state" data-testid="empty-state">No products match your filters.</p>
+  <% } %>
+</section>
+
+<script src="/js/catalog.js"></script>
+<%- include('partials/footer') %>

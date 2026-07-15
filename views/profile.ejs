@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<section class="profile-page">
+  <h1>My Profile</h1>
+  <div class="profile-card" data-testid="profile-card">
+    <p><strong>Name:</strong> <span data-testid="profile-name"><%= user.name %></span></p>
+    <p><strong>Email:</strong> <span data-testid="profile-email"><%= user.email %></span></p>
+    <p>
+      <strong>Role:</strong>
+      <%
+        // BUG DB-3: this badge is hardcoded to show "Admin" for
+        // priya@qaplayground.test regardless of her actual `role` column in
+        // the database (which is 'customer'). Querying the users table
+        // directly will reveal the mismatch. See BUGS.md DB-3.
+        var displayRole = (user.email === 'priya@qaplayground.test') ? 'admin' : user.role;
+      %>
+      <span class="status-badge" data-testid="profile-role"><%= displayRole %></span>
+    </p>
+    <p><strong>Member since:</strong> <span data-testid="profile-created"><%= user.created_at %></span></p>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

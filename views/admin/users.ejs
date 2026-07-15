@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<section class="admin-page">
+  <h1>Manage Users</h1>
+  <table class="data-table" data-testid="admin-users-table">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Created</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% users.forEach(function(u) { %>
+        <tr data-testid="admin-user-row" data-id="<%= u.id %>">
+          <td><%= u.id %></td>
+          <td><%= u.name %></td>
+          <td><%= u.email %></td>
+          <td>
+            <form action="/admin/users/<%= u.id %>/role" method="POST" class="inline-form">
+              <select name="role" onchange="this.form.submit()" data-testid="user-role-select">
+                <option value="customer" <%= u.role === 'customer' ? 'selected' : '' %>>customer</option>
+                <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>admin</option>
+              </select>
+            </form>
+          </td>
+          <td><%= u.created_at %></td>
+          <td>
+            <form action="/admin/users/<%= u.id %>/delete" method="POST" class="inline-form">
+              <button type="submit" class="btn btn-danger btn-sm" data-testid="delete-user-btn">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</section>
+
+<%- include('../partials/footer') %>

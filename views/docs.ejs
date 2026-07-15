@@ -1,0 +1,86 @@
+<%- include('partials/header') %>
+
+<section class="docs-page">
+  <h1>Documentation &amp; API Reference</h1>
+
+  <h2>Overview</h2>
+  <p>QA Playground is a small storefront app built to practice three kinds of test automation against one realistic codebase:</p>
+  <ul>
+    <li><strong>UI automation</strong> &mdash; registration, login, product search/filter/sort, cart, checkout, order history, an admin panel with modals, and a contact form.</li>
+    <li><strong>API automation</strong> &mdash; a REST API under <code>/api</code> for auth, products, users, and orders.</li>
+    <li><strong>SQL data validation</strong> &mdash; a SQLite database at <code>db/qa_playground.sqlite</code> you can query directly and compare against what the UI/API report.</li>
+  </ul>
+
+  <h2>Sample Accounts</h2>
+  <table class="data-table">
+    <thead><tr><th>Email</th><th>Password</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>admin@qaplayground.test</td><td>Admin123!</td><td>admin</td></tr>
+      <tr><td>charlie@qaplayground.test</td><td>Customer123!</td><td>customer</td></tr>
+      <tr><td>priya@qaplayground.test</td><td>Priya123!</td><td>customer</td></tr>
+      <tr><td>sam@qaplayground.test</td><td>Sam123!</td><td>customer</td></tr>
+    </tbody>
+  </table>
+
+  <h2>REST API</h2>
+  <p>Base URL: <code>/api</code>. Authenticate with <code>POST /api/auth/login</code> to get a bearer token, then send <code>Authorization: Bearer &lt;token&gt;</code> on protected routes.</p>
+  <table class="data-table">
+    <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td>/api/auth/register</td><td>-</td><td>Create an account, returns a token</td></tr>
+      <tr><td>POST</td><td>/api/auth/login</td><td>-</td><td>Log in, returns a token</td></tr>
+      <tr><td>POST</td><td>/api/auth/logout</td><td>Bearer</td><td>Log out (acknowledgement only)</td></tr>
+      <tr><td>GET</td><td>/api/auth/me</td><td>Bearer</td><td>Current user info</td></tr>
+      <tr><td>GET</td><td>/api/products</td><td>-</td><td>List products (query: category, search, sort)</td></tr>
+      <tr><td>GET</td><td>/api/products/:id</td><td>-</td><td>Get one product</td></tr>
+      <tr><td>POST</td><td>/api/products</td><td>Bearer (admin)</td><td>Create a product</td></tr>
+      <tr><td>PUT</td><td>/api/products/:id</td><td>Bearer (admin)</td><td>Update a product</td></tr>
+      <tr><td>DELETE</td><td>/api/products/:id</td><td>Bearer (admin)</td><td>Delete a product</td></tr>
+      <tr><td>GET</td><td>/api/users</td><td>Bearer (admin)</td><td>List users</td></tr>
+      <tr><td>GET</td><td>/api/users/:id</td><td>Bearer</td><td>Get one user</td></tr>
+      <tr><td>PUT</td><td>/api/users/:id</td><td>Bearer</td><td>Update own profile (or any, if admin)</td></tr>
+      <tr><td>DELETE</td><td>/api/users/:id</td><td>Bearer (admin)</td><td>Delete a user</td></tr>
+      <tr><td>GET</td><td>/api/orders</td><td>Bearer</td><td>List own orders (all orders if admin)</td></tr>
+      <tr><td>GET</td><td>/api/orders/:id</td><td>Bearer</td><td>Get one order with items</td></tr>
+      <tr><td>POST</td><td>/api/orders</td><td>Bearer</td><td>Create an order from items</td></tr>
+      <tr><td>POST</td><td>/api/orders/:id/cancel</td><td>Bearer</td><td>Cancel an order still in "placed" status</td></tr>
+    </tbody>
+  </table>
+  <p>Full request/response examples: see <code>API.md</code> in the project root.</p>
+
+  <h2>Known Bugs (Answer Key)</h2>
+  <p>This app intentionally contains defects across all three layers. Use them as automation targets. Full write-up in <code>BUGS.md</code>.</p>
+
+  <h3>UI Bugs</h3>
+  <ul>
+    <li><strong>UI-1</strong> &mdash; The "Pricing" nav link is broken (404).</li>
+    <li><strong>UI-2</strong> &mdash; "Add to Cart" button is visually misaligned on Electronics category cards.</li>
+    <li><strong>UI-3</strong> &mdash; Registration's Confirm Password field is not actually validated against Password.</li>
+    <li><strong>UI-4</strong> &mdash; Email validation (login/register/contact) rejects valid plus-addressed emails like <code>user+test@example.com</code>.</li>
+    <li><strong>UI-5</strong> &mdash; The product quick-filter search is case-sensitive.</li>
+    <li><strong>UI-6</strong> &mdash; The "Price: Low to High" sort option actually sorts high to low (and vice versa).</li>
+    <li><strong>UI-7</strong> &mdash; The delete-product confirmation modal does not close on outside click, unlike the add/edit modal.</li>
+    <li><strong>UI-8</strong> &mdash; The cart page's live "Total" excludes shipping, while the checkout/order total includes it.</li>
+  </ul>
+
+  <h3>API Bugs</h3>
+  <ul>
+    <li><strong>API-1</strong> &mdash; <code>POST /api/auth/login</code> returns HTTP 200 (with <code>success: false</code>) on invalid credentials instead of 401.</li>
+    <li><strong>API-2</strong> &mdash; <code>POST /api/orders</code> returns HTTP 200 instead of 201 on creation.</li>
+    <li><strong>API-3</strong> &mdash; <code>DELETE /api/products/:id</code> returns 200 even when the id does not exist (should 404).</li>
+    <li><strong>API-4</strong> &mdash; <code>PUT /api/products/:id</code> does not persist changes to <code>price</code>, even though the response echoes the new value.</li>
+    <li><strong>API-5</strong> &mdash; <code>GET /api/products/2</code> returns <code>price</code> as a string instead of a number.</li>
+    <li><strong>API-6</strong> &mdash; <code>POST /api/products</code> does not reject negative <code>price</code> or <code>stock</code>.</li>
+    <li><strong>API-7</strong> &mdash; <code>GET /api/users/:id</code> leaks the <code>password_hash</code> field.</li>
+  </ul>
+
+  <h3>Database / Data-Validation Bugs</h3>
+  <ul>
+    <li><strong>DB-1</strong> &mdash; Same root cause as API-4: product price edits (via UI or API) never reach the <code>products</code> table.</li>
+    <li><strong>DB-2</strong> &mdash; The cart's live-updating total (UI-8) diverges from the <code>orders.total</code> column, which correctly includes shipping.</li>
+    <li><strong>DB-3</strong> &mdash; The profile page hardcodes an "Admin" badge for <code>priya@qaplayground.test</code>; her <code>users.role</code> column actually stores <code>customer</code>.</li>
+    <li><strong>DB-4</strong> &mdash; Cancelling an order updates its status to "cancelled" but never restores the cancelled items' quantity to <code>products.stock</code>.</li>
+  </ul>
+</section>
+
+<%- include('partials/footer') %>

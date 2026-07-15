@@ -1,0 +1,17 @@
+{
+  "name": "qa-playground",
+  "version": "1.0.0",
+  "description": "A full-featured demo web application for practicing UI automation, API automation, and SQL data validation testing. Intentionally contains bugs across the UI, API, and database layers.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}

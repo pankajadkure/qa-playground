@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<section class="orders-page">
+  <h1>Order History</h1>
+  <% if (orders.length === 0) { %>
+    <p class="empty-state" data-testid="orders-empty">You haven't placed any orders yet.</p>
+  <% } else { %>
+    <table class="data-table" data-testid="orders-table">
+      <thead>
+        <tr><th>Order #</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(function(o) { %>
+          <tr data-testid="order-row" data-order-id="<%= o.id %>">
+            <td>#<%= o.id %></td>
+            <td><%= o.created_at %></td>
+            <td><span class="status-badge status-<%= o.status %>"><%= o.status %></span></td>
+            <td>$<%= o.total.toFixed(2) %></td>
+            <td><a href="/orders/<%= o.id %>" data-testid="order-view-link">View</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

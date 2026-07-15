@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+
+<section class="order-detail-page">
+  <h1>Order #<%= order.id %></h1>
+  <p>Status: <span class="status-badge status-<%= order.status %>" data-testid="order-status"><%= order.status %></span></p>
+  <p>Placed: <%= order.created_at %></p>
+
+  <table class="data-table" data-testid="order-items-table">
+    <thead>
+      <tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr>
+    </thead>
+    <tbody>
+      <% items.forEach(function(it) { %>
+        <tr>
+          <td><%= it.image_emoji %> <%= it.product_name %></td>
+          <td><%= it.quantity %></td>
+          <td>$<%= it.unit_price.toFixed(2) %></td>
+          <td>$<%= (it.unit_price * it.quantity).toFixed(2) %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <div class="checkout-summary" data-testid="order-summary">
+    <p>Subtotal: <span data-testid="order-subtotal">$<%= order.subtotal.toFixed(2) %></span></p>
+    <p>Shipping: <span data-testid="order-shipping">$<%= order.shipping_fee.toFixed(2) %></span></p>
+    <p class="total-line">Total: <span data-testid="order-total">$<%= order.total.toFixed(2) %></span></p>
+  </div>
+
+  <div class="order-detail-actions">
+    <a href="/orders" class="btn btn-link">&larr; Back to order history</a>
+    <% if (order.status === 'placed') { %>
+      <button type="button" class="btn btn-danger" id="open-cancel-order-modal" data-testid="cancel-order-btn">
+        Cancel Order
+      </button>
+    <% } %>
+  </div>
+</section>
+
+<% if (order.status === 'placed') { %>
+  <div class="modal-overlay" id="cancel-order-modal-overlay" data-testid="cancel-order-modal-overlay" hidden>
+    <div class="modal">
+      <h2>Cancel Order</h2>
+      <p>Are you sure you want to cancel Order #<%= order.id %>? This can't be undone.</p>
+      <form action="/orders/<%= order.id %>/cancel" method="POST" data-testid="cancel-order-form">
+        <div class="modal-actions">
+          <button type="button" class="btn btn-link" id="cancel-cancel-order-modal" data-testid="cancel-cancel-order-modal">
+            Never mind
+          </button>
+          <button type="submit" class="btn btn-danger" data-testid="confirm-cancel-order-btn">
+            Yes, Cancel Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="/js/order-detail.js"></script>
+<% } %>
+
+<%- include('partials/footer') %>

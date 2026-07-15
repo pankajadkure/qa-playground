@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<section class="cart-page">
+  <h1>Your Cart</h1>
+
+  <% if (items.length === 0) { %>
+    <p class="empty-state" data-testid="cart-empty">Your cart is empty. <a href="/products">Browse products</a>.</p>
+  <% } else { %>
+    <table class="data-table" id="cart-table" data-testid="cart-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Line Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(function(item) { %>
+          <tr data-testid="cart-row" data-product-id="<%= item.product.id %>" data-price="<%= item.product.price %>">
+            <td><%= item.product.image_emoji %> <%= item.product.name %></td>
+            <td class="cart-item-price" data-testid="cart-item-price">$<%= item.product.price.toFixed(2) %></td>
+            <td>
+              <form action="/cart/update" method="POST" class="inline-form qty-form">
+                <input type="hidden" name="product_id" value="<%= item.product.id %>" />
+                <input
+                  type="number"
+                  name="quantity"
+                  min="1"
+                  value="<%= item.quantity %>"
+                  class="qty-input"
+                  data-testid="cart-qty-input"
+                />
+                <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+              </form>
+            </td>
+            <td class="cart-line-total" data-testid="cart-line-total">
+              $<%= (item.product.price * item.quantity).toFixed(2) %>
+            </td>
+            <td>
+              <form action="/cart/remove" method="POST" class="inline-form">
+                <input type="hidden" name="product_id" value="<%= item.product.id %>" />
+                <button type="submit" class="btn btn-link btn-danger" data-testid="cart-remove-btn">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="cart-summary" data-testid="cart-summary">
+      <p>Subtotal: <span data-testid="cart-subtotal">$<%= subtotal.toFixed(2) %></span></p>
+      <p class="cart-live-total">
+        Total: <span id="cart-live-total" data-testid="cart-live-total">$<%= subtotal.toFixed(2) %></span>
+      </p>
+      <p class="hint">Shipping and taxes are calculated at checkout.</p>
+      <a href="/checkout" class="btn btn-primary" data-testid="checkout-btn">Proceed to Checkout</a>
+    </div>
+  <% } %>
+</section>
+
+<script src="/js/cart.js"></script>
+<%- include('partials/footer') %>
