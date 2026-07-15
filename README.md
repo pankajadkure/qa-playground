@@ -2,6 +2,14 @@
 
 A full-featured demo storefront built specifically for practicing **UI automation**, **API automation**, and **SQL data validation** testing. It simulates a realistic small e-commerce app (browse products, cart, checkout, order history, admin panel) and **intentionally contains bugs** across the UI, API, and database layers so you have real things to catch.
 
+## 🌐 Live Demo
+
+**[https://qa-playground-automation-testing.onrender.com/](https://qa-playground-automation-testing.onrender.com/)**
+
+Hosted free on [Render](https://render.com). Two things to know about this instance:
+- **Cold starts:** the free tier sleeps after ~15 minutes of inactivity. The first request after a period of no traffic can take 30-50 seconds to wake back up — that's expected, not a bug.
+- **Data resets on redeploy/restart:** the database reseeds to its original sample state (see [Sample Accounts](#sample-accounts) below) every time the instance restarts, since the free tier's disk isn't persistent. Don't rely on data (like a cancelled order, or a newly registered account) surviving long-term on this instance.
+
 ## Stack
 
 - Node.js + Express
