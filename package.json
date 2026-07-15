@@ -4,6 +4,9 @@
   "description": "A full-featured demo web application for practicing UI automation, API automation, and SQL data validation testing. Intentionally contains bugs across the UI, API, and database layers.",
   "main": "server.js",
   "type": "commonjs",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "start": "node server.js",
     "seed": "node db/seed.js"
