@@ -1,0 +1,4 @@
+node_modules/
+db/*.sqlite
+.claude/settings.local.json
+npm-debug.log*
