@@ -7,10 +7,24 @@ const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/api');
 
 const app = express();
+app.disable('x-powered-by');
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+  );
+  next();
+});
+
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,12 +35,13 @@ app.use(
     secret: 'qa-playground-demo-secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 8 },
+    cookie: { maxAge: 1000 * 60 * 60 * 8, sameSite: 'lax' },
   })
 );
 
 // Make the logged-in user available to all views
 app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
   res.locals.currentUser = req.session.user || null;
   res.locals.cartCount = (req.session.cart || []).reduce((sum, i) => sum + i.quantity, 0);
   next();
