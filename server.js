@@ -25,6 +25,12 @@ app.use(
   })
 );
 
+// Prevent clickjacking
+app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
+  next();
+});
+
 // Make the logged-in user available to all views
 app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;
