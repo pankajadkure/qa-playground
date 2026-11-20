@@ -6,7 +6,7 @@
     <div class="alert alert-error" data-testid="login-error"><%= error %></div>
   <% } %>
   <form action="/login" method="POST" class="form" id="login-form" data-testid="login-form" novalidate>
-    <input type="hidden" name="next" value="<%= next %>" />
+    <input type="hidden" name="next" value="<%= (typeof next === 'string' && /^\/(?![\/\\])[^\r\n\t]*$/.test(next)) ? next : '/' %>" />
     <div class="form-group">
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required data-testid="login-email" />
